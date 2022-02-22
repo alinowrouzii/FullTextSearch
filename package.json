@@ -1,0 +1,24 @@
+{
+  "name": "contact-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alinowrouzii/contact-list.git"
+  },
+  "keywords": [
+    "Nodejs",
+    "Express",
+    "Mongoose"
+  ],
+  "author": "Ali Nowrouzi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alinowrouzii/contact-list/issues"
+  },
+  "homepage": "https://github.com/alinowrouzii/contact-list#readme"
+}
