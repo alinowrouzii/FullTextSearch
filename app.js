@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { BASE_URL } = require("./config/index.js");
+const { BASE_URL, DEBUG } = require("./config/index.js");
 
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
@@ -23,12 +23,14 @@ var options = {
     explorer: true,
 };
 
-const swaggerDocument = YAML.load("./swagger.yaml");
-app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument, options)
-);
+if (DEBUG) {
+    const swaggerDocument = YAML.load("./swagger.yaml");
+    app.use(
+        "/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerDocument, options)
+    );
+}
 
 
 
