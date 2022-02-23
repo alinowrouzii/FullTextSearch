@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const contactRoute = require("./routes/contactRoute.js");
 const { BASE_URL } = require("./config/index.js");
 
 const swaggerUi = require("swagger-ui-express");
@@ -31,10 +30,6 @@ app.use(
     swaggerUi.setup(swaggerDocument, options)
 );
 
-app.get("/ping", (req, res) => {
-    res.send("PONG");
-});
 
-app.use("/api/contact", contactRoute);
 
 module.exports = app;

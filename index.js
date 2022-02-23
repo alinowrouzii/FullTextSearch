@@ -1,31 +1,47 @@
 const logger = require("./config/logger.js");
 const mongooseSetup = require("./db/index.js");
 const app = require("./app.js");
+const contactRoute = require("./routes/contactRoute.js");
+const { redisStart } = require("./db/redis.js");
+const { PORT } = require("./config");
 
-const {PORT} = require("./config")
 let attempt = 0;
 const MAX_ATTEMPT = 5;
 
-const runApi = () => {
+const runApi = async () => {
   attempt += 1;
 
   logger.info("Try to run API");
-  mongooseSetup()
-    .then(() => {
-      logger.info("MongoDB connected!!");
+  try {
+    await mongooseSetup();
+    logger.info("MongoDB connected!!");
 
-      const PORT = process.env.PORT || 5000;
-      app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
-    })
-    .catch((err) => {
-      logger.error(`${err} mongoDB didn't connect!`);
-      if (attempt < MAX_ATTEMPT) {
-        setTimeout(runApi, 10000);
-      } else {
-        logger.error("Exiting the process!");
-        process.exit(1);
-      }
+    const redisClient = await redisStart();
+    logger.info("Redis connected!!");
+
+    app.use(function (req, res, next) {
+      req.redis = redisClient;
+      next();
     });
+
+    app.get("/ping", (req, res) => {
+      res.send("PONG");
+    });
+
+    app.use("/api/contact", contactRoute);
+
+    app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
+  } catch (e) {
+    logger.error(`${err} mongoDB didn't connect!`);
+    if (attempt < MAX_ATTEMPT) {
+      setTimeout(runApi, 10000);
+    } else {
+      logger.error("Exiting the process!");
+      process.exit(1);
+    }
+  }
+
+
 };
 
 runApi();
