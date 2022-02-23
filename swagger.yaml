@@ -73,7 +73,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Contact"
         "400":
-          description: "All require input are not entered, or contactID is not valid"
+          description: "All require input are not entered, or contactID is not valid or phoneNumber format is wrong"
         "404":
           description: "Contact not found!"
     get:
