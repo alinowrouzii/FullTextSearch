@@ -1,0 +1,136 @@
+openapi: 3.0.0
+
+tags:
+  - name: "Contact"
+    description: "CRUD operation on contact"
+
+paths:
+  /api/contact/:
+    post:
+      tags:
+        - "Contact"
+      summary: "Create new Contact"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phoneNumber:
+                  type: string
+            example:
+              firstName: "Jessica"
+              lastName: "Smith"
+              phoneNumber: "09221234322"
+      responses:
+        "201":
+          description: "Contact created successfully."
+        "400":
+          description: "BAD REQUEST, all required input are not entered or format of phone number is wrong."
+    
+    patch:
+      tags:
+        - "Contact"
+      summary: "Edit contact based on fields entered"
+      description: "Edit firstName or lastName or phoneNumber of contact."
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                contactID:
+                  type: string
+                  required: true
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                phoneNumber:
+                  type: string
+            example:
+              contactID: "507f191e810c19729de860ea"
+              firstName: "Jessica"
+              lastName: "Smith"
+              phoneNumber: "09221234322"
+      responses:
+        "200":
+          description: "Contact edited successfully"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+        "400":
+          description: "All require input are not entered, or contactID is not valid"
+        "404":
+          description: "Contact not found!"
+    get:
+      tags:
+        - "Contact"
+      summary: "Get Contacts based on text entered"
+      description: "text query should be entered to getting the related contact."
+      parameters:
+        - in: query
+          name: text
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "contact fetched successfully"
+        "400":
+          description: "text query is not entered"
+
+  /api/contact/{contact_id}:
+    delete:
+      tags:
+        - "Contact"
+      summary: "Delete contact by its ID"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: contact_id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            example: "507f191e810c19729de860ea"
+      responses:
+        "200":
+          description: "Contact deleted successfully"
+        "400":
+          description: "Contact_id is not valid"
+        "404":
+          description: "Contact not found!"
+components:
+  schemas:
+    Contact:
+      type: "object"
+      properties:
+        _id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phoneNumber:
+          type: string
+      example:
+        _id: "507f191e810c19729de860ea"
+        firstName: "Jessica"
+        lastName: "Smith"
+        phoneNumber: "09221234321"
+        createdAt: "2021-09-03T16:27:39.128Z"
+        updateddAt: "2021-09-03T16:27:39.128Z"
