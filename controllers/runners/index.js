@@ -1,18 +1,18 @@
 const getData = async (query, redisClient) => {
 
-    const data_to_fetch = query.trim().split(" ")
+    const dataToFetch = query.toLowerCase().trim().split(" ")
 
-    const fetchedIDS = await redisClient.SINTER(data_to_fetch)
+    const fetchedIDS = await redisClient.SINTER(dataToFetch)
     return fetchedIDS
 }
 
 const addData = async (data, redisClient) => {
     const { firstName, lastName, phoneNumber, _id: docID } = data;
 
-    let data_to_add = String(firstName + " " + lastName + " " + phoneNumber);
-    data_to_add = data_to_add.trim().split(" ")
+    let dataToAdd = String(firstName + " " + lastName + " " + phoneNumber).toLowerCase();
+    dataToAdd = dataToAdd.trim().split(" ")
 
-    for (const word of data_to_add) {
+    for (const word of dataToAdd) {
 
         // add all prefix of word to our set.
         // we store all prefix of words that have more than or equal of three chars
@@ -27,7 +27,7 @@ const deleteData = async (oldData, redisClient) => {
 
     const { firstName, lastName, phoneNumber, _id: docID } = oldData;
 
-    let dataToRemove = String(firstName + " " + lastName + " " + phoneNumber);
+    let dataToRemove = String(firstName + " " + lastName + " " + phoneNumber).toLowerCase();
     dataToRemove = dataToRemove.trim().split(" ")
 
     for (const word of dataToRemove) {
@@ -38,7 +38,6 @@ const deleteData = async (oldData, redisClient) => {
         }
     }
 }
-
 
 const updateData = async (oldData, newData, redisClient) => {
     await deleteData(oldData, redisClient);
