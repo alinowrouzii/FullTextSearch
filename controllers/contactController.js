@@ -68,6 +68,14 @@ exports.updateContact = async (req, res) => {
         return res.status(200).json({ status: 'success', contact: contact.toObject() });
     } catch (e) {
 
+        if (e instanceof mongoose.Error.ValidationError) {
+            for (errorFields in e.errors) {
+                if (errorFields === 'phoneNumber') {
+                    return res.status(400).json({ status: 'fail', detail: 'PhoneNumber format should be 09998882233' });
+                }
+            }
+        }
+
         return res.status(404).json({ status: 'fail', detail: 'Contact not found' });
     }
 
