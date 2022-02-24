@@ -79,7 +79,24 @@ paths:
     get:
       tags:
         - "Contact"
-      summary: "Get Contacts based on text entered"
+      summary: "Get Contacts based on text entered (Inverted Index)"
+      description: "text query should be entered to getting the related contact."
+      parameters:
+        - in: query
+          name: text
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "contact fetched successfully"
+        "400":
+          description: "text query is not entered"
+  /api/contact/ordinary/:
+    get:
+      tags:
+        - "Contact"
+      summary: "Get Contacts based on text entered (Ordinary approach)"
       description: "text query should be entered to getting the related contact."
       parameters:
         - in: query
