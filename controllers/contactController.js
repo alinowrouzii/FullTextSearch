@@ -1,7 +1,11 @@
 
 const mongoose = require('mongoose');
 const Contact = require('../models/Contact.js');
-const { addData, getData, deleteData, updateData } = require('./runners/index.js');
+const { addData, getData, deleteData, updateData } = require('./runners/InvertedIndex/index.js');
+
+// َUnlike InvertedIndex approach, This method loops over all the document and
+// search for matched query
+const { getData: ordinaryGetData } = require('./runners/ordinary/index.js');
 
 exports.createContact = async (req, res) => {
     const { firstName, lastName, phoneNumber } = req.body;
@@ -100,6 +104,19 @@ exports.getContact = async (req, res) => {
 
     return res.status(200).json({ status: 'success', contacts: fetchedContacts });
 
+}
+
+
+exports.ordinaryGetContact = async (req, res) => {
+
+    const textToSearch = req.query.text;
+
+    if (!textToSearch) {
+        return res.status(400).json({ status: 'fail', detail: 'Bad request' });
+    }
+    let fetchedData = await ordinaryGetData(textToSearch)
+
+    return res.status(200).json({ status: 'success', contacts: fetchedData });
 }
 
 exports.deleteContact = async (req, res) => {
