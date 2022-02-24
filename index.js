@@ -2,13 +2,13 @@ const logger = require("./config/logger.js");
 const mongooseSetup = require("./db/index.js");
 const app = require("./app.js");
 const contactRoute = require("./routes/contactRoute.js");
-const { redisStart } = require("./db/redis.js");
+const redisStart = require("./db/redis.js");
 const { PORT } = require("./config");
 
 let attempt = 0;
 const MAX_ATTEMPT = 5;
 
-const runApi = async () => {
+const runAPI = async () => {
   attempt += 1;
 
   logger.info("Try to run API");
@@ -30,8 +30,8 @@ const runApi = async () => {
 
     app.use("/api/contact", contactRoute);
 
-    app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
-  } catch (e) {
+    return app;
+  } catch (err) {
     logger.error(`${err} mongoDB didn't connect!`);
     if (attempt < MAX_ATTEMPT) {
       setTimeout(runApi, 10000);
@@ -40,8 +40,10 @@ const runApi = async () => {
       process.exit(1);
     }
   }
-
-
 };
 
-runApi();
+runAPI().then((app) => {
+  app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
+})
+
+module.exports = runAPI;
