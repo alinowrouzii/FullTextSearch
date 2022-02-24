@@ -1,7 +1,7 @@
 const { createClient } = require("redis");
 const logger = require("../config/logger");
 
-exports.redisStart = async () => {
+module.exports = async () => {
     const client = createClient();
 
     client.on('error', (err) => logger.error(`Redis Client Error ${err}`));
