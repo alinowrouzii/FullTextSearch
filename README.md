@@ -19,7 +19,7 @@ When a query comes in, first lowercase query and split that by " " then Intersec
 
 ### Below is the comparison between these two methods' performance
 
-![comparison](https://github.com/alinowrouzii/contact-list/tree/master/md/comparison.png)
+![comparison](https://github.com/alinowrouzii/contact-list/blob/master/md/comparison.png)
 
 As you see above at first, it creates 1000 contacts that take 13.3 seconds (13.3 ms per request).
 
