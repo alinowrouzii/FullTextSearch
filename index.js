@@ -42,8 +42,4 @@ const runAPI = async () => {
   }
 };
 
-runAPI().then((app) => {
-  app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
-})
-
 module.exports = runAPI;
