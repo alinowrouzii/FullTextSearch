@@ -3,7 +3,7 @@
 
 ## Summary
 
-## This project has CRUD operation on Contact data.
+### This project has CRUD operation on Contact data.
 #### Each contact has firstName, lastName and phoneNumber.
 
 
