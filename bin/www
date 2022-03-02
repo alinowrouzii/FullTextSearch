@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const runAPI = require('../index.js');
+const { PORT } = require('./../config/index.js')
+const logger = require('./../config/logger.js')
+
+runAPI().then((app) => {
+  app.listen(PORT, () => logger.info(`Server is running on Port: ${PORT}`));
+})
